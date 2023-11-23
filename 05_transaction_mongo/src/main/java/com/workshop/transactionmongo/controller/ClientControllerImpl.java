@@ -16,7 +16,7 @@ import java.util.List;
 public class ClientControllerImpl implements IClientController {
     private final IClientService clientService;
 
-    @GetMapping("/")
+    @GetMapping
     @Override
     public ResponseEntity<?> getClients() {
         try {
