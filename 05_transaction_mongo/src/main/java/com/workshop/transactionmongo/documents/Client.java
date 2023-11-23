@@ -3,20 +3,24 @@ package com.workshop.transactionmongo.documents;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document
 public class Client {
     @Id
     private String id;
     private String name;
     private String email;
+    private List<Account> accounts;
 
     public Client() {
     }
 
-    public Client(String id, String name, String email) {
+    public Client(String id, String name, String email, List<Account> accounts) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.accounts = accounts;
     }
 
     public String getId() {
@@ -41,5 +45,13 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 }
