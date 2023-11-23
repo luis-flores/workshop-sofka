@@ -15,5 +15,5 @@ public class ClientDTO {
     private String id;
     private String name;
     private String email;
-    private List<AccountDTO> accounts;
+    private AccountDTO account;
 }

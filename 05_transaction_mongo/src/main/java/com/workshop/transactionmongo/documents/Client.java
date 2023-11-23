@@ -11,16 +11,17 @@ public class Client {
     private String id;
     private String name;
     private String email;
-    private List<Account> accounts;
+
+    private Account account;
 
     public Client() {
     }
 
-    public Client(String id, String name, String email, List<Account> accounts) {
+    public Client(String id, String name, String email, Account account) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.accounts = accounts;
+        this.account = account;
     }
 
     public String getId() {
@@ -47,11 +48,11 @@ public class Client {
         this.email = email;
     }
 
-    public List<Account> getAccounts() {
-        return accounts;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

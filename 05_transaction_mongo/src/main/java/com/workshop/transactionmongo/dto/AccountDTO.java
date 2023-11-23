@@ -12,6 +12,5 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class AccountDTO {
-    private String id;
     private BigDecimal balance;
 }
