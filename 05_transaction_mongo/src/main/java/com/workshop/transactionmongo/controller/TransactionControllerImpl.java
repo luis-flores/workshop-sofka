@@ -1,5 +1,6 @@
 package com.workshop.transactionmongo.controller;
 
+import com.workshop.transactionmongo.dto.ClientDTO;
 import com.workshop.transactionmongo.dto.TransactionDTO;
 import com.workshop.transactionmongo.service.ITransactionService;
 import jakarta.validation.Valid;
@@ -31,5 +32,14 @@ public class TransactionControllerImpl implements ITransactionController  {
     @Override
     public ResponseEntity<List<TransactionDTO>> findAll() {
         return ResponseEntity.ok(transactionService.findAll());
+    }
+
+    @GetMapping("/client/{clientId}")
+    @Override
+    public ResponseEntity<List<TransactionDTO>> findTransactionsByClient(@PathVariable String clientId) {
+        ClientDTO client = new ClientDTO();
+        client.setId(clientId);
+        List<TransactionDTO> transactions = transactionService.findTransactionsByClient(client);
+        return ResponseEntity.ok(transactions);
     }
 }

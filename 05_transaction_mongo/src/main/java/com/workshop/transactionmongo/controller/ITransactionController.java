@@ -9,4 +9,5 @@ import java.util.List;
 public interface ITransactionController {
     ResponseEntity save(TransactionDTO transaction, BindingResult result);
     ResponseEntity<List<TransactionDTO>> findAll();
+    ResponseEntity<List<TransactionDTO>> findTransactionsByClient(String clientId);
 }
