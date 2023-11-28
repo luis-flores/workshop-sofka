@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class DojoStreamTest {
+class DojoStreamTest {
 
     private final Comparator<Player> comparadorMejorJugador = (Player p1, Player p2) -> {
         if (p1.getWinners() > p2.getWinners())
@@ -14,12 +14,8 @@ public class DojoStreamTest {
         if (p1.getWinners() < p2.getWinners())
             return -1;
 
-        if (p1.getGames() > p2.getGames())
-            return 1;
-        if (p1.getGames() < p2.getGames())
-            return -1;
+        return Integer.compare(p1.getGames(), p2.getGames());
 
-        return 0;
     };
 
     @Test
@@ -62,7 +58,7 @@ public class DojoStreamTest {
         String mejorJugador = list.stream()
             .filter(player -> player.getNational().equals("France"))
             .max(comparadorMejorJugador)
-            .get()
+            .orElseThrow(IllegalArgumentException::new)
             .getName();
 
         System.out.println(mejorJugador);
@@ -77,18 +73,17 @@ public class DojoStreamTest {
                 Collectors.mapping(Player::getClub, Collectors.toList())
             ));
 
-        clubesPorNacionalidad.forEach((nacionalidad, clubes) -> {
-            System.out.println("Nacionalidad: " + nacionalidad + ", Clubes: " + clubes);
-        });
+        clubesPorNacionalidad.forEach((nacionalidad, clubes) ->
+            System.out.println("Nacionalidad: " + nacionalidad + ", Clubes: " + clubes));
     }
 
     @Test
     void clubConElMejorJugador(){
         List<Player> list = CsvUtilFile.getPlayers();
         String club = list.stream()
-          .max(comparadorMejorJugador)
-          .get()
-          .getClub();
+            .max(comparadorMejorJugador)
+            .orElseThrow(IllegalArgumentException::new)
+            .getClub();
 
         System.out.println(club);
     }
@@ -97,9 +92,9 @@ public class DojoStreamTest {
     void elMejorJugador(){
         List<Player> list = CsvUtilFile.getPlayers();
         String mejorJugador = list.stream()
-           .max(comparadorMejorJugador)
-           .get()
-           .getName();
+            .max(comparadorMejorJugador)
+            .orElseThrow(IllegalArgumentException::new)
+            .getName();
 
         System.out.println(mejorJugador);
     }
@@ -112,7 +107,7 @@ public class DojoStreamTest {
                 Player::getNational,
                 Collectors.collectingAndThen(
                     Collectors.maxBy(comparadorMejorJugador),
-                    player -> player.map(p -> p.getName()).orElse(null)
+                    player -> player.map(Player::getName).orElse(null)
                 )
             ));
 
