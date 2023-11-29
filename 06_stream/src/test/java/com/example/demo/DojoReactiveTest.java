@@ -55,7 +55,6 @@ public class DojoReactiveTest {
                     value.forEach(v ->
                         System.out.println(v.getName())
                     );
-                    System.out.println("\n");
                 });
             });
     }
@@ -74,7 +73,19 @@ public class DojoReactiveTest {
 
     @Test
     void clubsAgrupadosPorNacionalidad(){
+        List<Player> list = CsvUtilFile.getPlayers();
 
+        Flux.fromIterable(list)
+            .groupBy(Player::getNational)
+            .subscribe(groupedFlux -> {
+                System.out.println();
+                String nacionalidad = groupedFlux.key();
+                System.out.println(nacionalidad + ":");
+
+                groupedFlux.subscribe(player -> {
+                   System.out.println(player.getClub());
+                });
+            });
     }
 
     @Test
@@ -118,48 +129,12 @@ public class DojoReactiveTest {
     @Test
     void mejorJugadorSegunNacionalidad(){
         List<Player> list = CsvUtilFile.getPlayers();
-        Flux<Player> observable = Flux.fromIterable(list);
-        /*
-        observable.groupBy(Player::getNational)
-            .flatMap(groupedFlux -> groupedFlux
-                .collectList()
-                .map(players -> {
-                    Map<String, List<Player>> map = new HashMap<>();
-                    players.
-                    map.put(groupedFlux.key(), players);
-                    return map;
-                })
-            );*/
-/*
-            .distinct()
-            .groupBy(Player::getClub)
-            .flatMap(groupedFlux -> groupedFlux
-                .collectList()
-                .map(players -> {
-                    Map<String, List<Player>> map = new HashMap<>();
-                    map.put(groupedFlux.key(), players);
-                    return map;
-                }))
-            .subscribe(map -> {
-                map.forEach((key, value) -> {
-                    System.out.println(key + ": ");
-                    value.forEach(v ->
-                        System.out.println(v.getName())
-                    );
-                    System.out.println("\n");
-                });
+        Flux.fromIterable(list)
+            .groupBy(Player::getNational)
+            .flatMap(group -> group.reduce((p1, p2) -> comparadorMejorJugador.compare(p1, p2) >= 0 ? p1 : p2))
+            .subscribe(mejorJugadorSegunNacionalidad -> {
+                String nacionalidad = mejorJugadorSegunNacionalidad.getNational();
+                System.out.println(nacionalidad + ": " + mejorJugadorSegunNacionalidad.getName());
             });
-        */
-
-        /*
-        Map<String, List<String>> clubesPorNacionalidad = list.stream()
-            .collect(Collectors.groupingBy(
-                Player::getNational,
-                Collectors.mapping(Player::getClub, Collectors.toList())
-            ));
-
-        clubesPorNacionalidad.forEach((nacionalidad, clubes) ->
-            System.out.println("Nacionalidad: " + nacionalidad + ", Clubes: " + clubes));
-         */
     }
 }
