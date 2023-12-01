@@ -36,6 +36,10 @@ public class ClientControllerImplTests {
         clients.add(new ClientDTO("id", "client-name", "client-email", account));
         when(clientService.findAll()).thenReturn(clients);
 
+//        List<ClientDTO> clients2 = new ArrayList<>();
+//        AccountDTO account2 = new AccountDTO(new BigDecimal("2000"));
+//        clients2.add(new ClientDTO("id2", "client-name2", "client-email2", account2));
+
         mockMvc.perform(get("/clients"))
             .andExpect(status().isOk())
             .andExpect(content().json(objectMapper.writeValueAsString(clients)));
